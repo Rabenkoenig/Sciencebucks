@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Insights from the 2024 StackOverflow Survey</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        line-height: 1.6;
+        margin: 20px;
+        color: rgb(255, 255, 227);
+        background-color: rgb(0, 36, 81);
+      }
+      h1 {
+        text-align: center;
+        color: rgb(204, 204, 204);
+      }
+
+      h2 {
+        color: rgb(204, 204, 204);
+      }
+      a {
+        color: rgb(239, 157, 145);
+      }
+
+      p {
+        display: block;
+        margin-block-start: 1em;
+        margin-block-end: 1em;
+        margin-inline-start: 0px;
+        margin-inline-end: 0px;
+        unicode-bidi: isolate;
+      }
+
+      .container {
+        max-width: 800px;
+        margin: auto;
+      }
+
+      img {
+        max-width: 100%;
+        height: auto;
+        display: block;
+        margin: 20px auto;
+      }
+
+      .quote {
+        font-style: italic;
+        border-left: 2px solid #007bff;
+        padding-left: 10px;
+        margin: 20px 0;
+      }
+
+      .cluster {
+        border: 1px solid #ddd;
+        padding: 15px;
+        margin: 15px 0;
+        border-radius: 5px;
+      }
+
+      .cluster h2 {
+        margin-top: 0;
+      }
+
+      .summary {
+        font-weight: bold;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <h1>Unlock the Developers' Collective Knowledge</h1>
+      <img src="collective_knowledge.PNG" alt="Collective Knowledge" />
+
+      <p>
+        The 2024 StackOverflow survey reveals critical insights into the
+        developer community, focusing on job satisfaction, AI tools, and the
+        relationship between coding experience and compensation. This analysis
+        is geared toward stakeholders interested in understanding the evolving
+        landscape of software development.
+      </p>
+      <p>Therefore, we want to answer the following three questions:</p>
+      <ul>
+        <li>
+          <a href="#q1"
+            >Do developers who frequently visit Stack Overflow report higher job
+            satisfaction?</a
+          >
+        </li>
+        <li>
+          <a href="#q2"
+            >How does the usage of AI tools correlate with developers' concerns
+            about AI's potential threats?</a
+          >
+        </li>
+        <li>
+          <a href="#q3"
+            >What is the relationship between years of professional coding
+            experience and total compensation across the top 10 different
+            countries?</a
+          >
+        </li>
+      </ul>
+
+      <h2>
+        <a name="q1"></a>
+        1. Do developers who frequently visit Stack Overflow report higher job
+        satisfaction?
+      </h2>
+
+      <p>As we know from <a href="#ref1">[1]</a>:</p>
+
+      <blockquote class="quote">
+        "Companies looking to enhance employee satisfaction should consider
+        encouraging participation in hobbies and open-source projects, offer
+        flexible remote work options, and understand the unique needs of
+        developers in different regions."
+      </blockquote>
+
+      <p>
+        Does using Stack Overflow also improve job satisfaction? Since it is one
+        of the most used Q&A forums for developers, it seems natural to expect a
+        correlation with overall job satisfaction. However, according to Figure
+        1, there is no significant improvement in overall job satisfaction.
+      </p>
+      <img src="q1_job_satisfaction.PNG" alt="Job satisfaction data visualization" />
+      <p><em>Figure 1 – Job Satisfaction</em></p>
+      <p>
+        <strong>Conclusion:</strong> Unfortunately, it seems that neither
+        visiting Stack Overflow nor participating in the Q&A section directly
+        impacts job satisfaction. The average job satisfaction remains
+        consistent, regardless of whether someone visits Stack Overflow rarely
+        or frequently. Additionally, the low correlation suggests that more
+        frequent visits to Stack Overflow do not have a direct effect on job
+        satisfaction.
+      </p>
+
+      <h2>
+        <a name="q2"></a>
+        2. How does the usage of AI tools correlate with developers' concerns
+        about AI's potential threats?
+      </h2>
+      <p>
+        To answer this question, we clustered developers based on their concerns
+        about AI, their usage of AI tools, and the challenges they foresee. It
+        is a high-risk, high-reward challenge that the community must overcome
+        <a href="#ref2">[2]</a>. We used K-Means Clustering from the Scikit-Learn
+        Python module <a href="#ref3">[3]</a> to identify three types of
+        developers and their opinions about AI as a threat to their jobs.
+      </p>
+      <img src="q2_ai_usage.PNG" alt="AI usage and concern clustering visualization" />
+      <p><em>Figure 2 – AI Usage and Concerns</em></p>
+
+      <p>
+        <strong>Conclusion:</strong> The clustering analysis reveals distinct
+        attitudes and perceptions regarding AI adoption and associated
+        challenges among the surveyed participants. Here’s a summary of the key
+        clusters:
+      </p>
+
+      <div class="cluster">
+        <h2>Cluster 0</h2>
+        <p>
+          <strong>AI Selection:</strong> Moderate inclination towards AI
+          adoption.
+        </p>
+        <p>
+          <strong>AI Trust:</strong> Highest trust level in AI technologies,
+          indicating confidence in AI outputs.
+        </p>
+        <p>
+          <strong>Perceived Threat:</strong> Moderate concern regarding AI
+          threats, suggesting awareness of risks but an overall positive
+          outlook.
+        </p>
+        <p class="summary">
+          <strong>Summary:</strong> Participants in this cluster show a positive
+          attitude toward AI adoption, characterized by strong trust in AI
+          technologies.
+        </p>
+      </div>
+
+      <div class="cluster">
+        <h2>Cluster 1</h2>
+        <p>
+          <strong>AI Selection:</strong> Similar inclination towards AI
+          adoption.
+        </p>
+        <p>
+          <strong>AI Trust:</strong> Slightly lower trust level, indicating more
+          skepticism.
+        </p>
+        <p>
+          <strong>Perceived Threat:</strong> Moderate AI threat perception,
+          reflecting cautiousness about AI risks.
+        </p>
+        <p class="summary">
+          <strong>Summary:</strong> This cluster exhibits a slightly more
+          skeptical view of AI adoption, with considerable concerns about the
+          reliability of AI outputs.
+        </p>
+      </div>
+
+      <div class="cluster">
+        <h2>Cluster 2</h2>
+        <p>
+          <strong>AI Selection:</strong> Highest inclination towards AI
+          adoption, indicating a proactive stance.
+        </p>
+        <p>
+          <strong>AI Trust:</strong> Moderate trust level, suggesting
+          confidence, though slightly cautious.
+        </p>
+        <p>
+          <strong>Perceived Threat:</strong> Lowest perceived threat, indicating
+          less concern about AI risks.
+        </p>
+        <p class="summary">
+          <strong>Summary:</strong> Participants in this cluster have a very
+          favorable view of AI, showing confidence and a lack of perceived
+          challenges.
+        </p>
+      </div>
+
+      <h2>
+        <a name="q3"></a>
+        3. What is the relationship between years of professional coding
+        experience and total compensation across the top 10 different countries?
+      </h2>
+      <p>
+        We used the survey responses to develop a ridge model with the help of
+        the Scikit-Learn module <a href="#ref4">[4]</a>. We then plotted a
+        diagram for the top 10 countries and their compensation over years of
+        professional coding. The results were quite remarkable.
+      </p>
+      <img src="q3_compensation.PNG" alt="Compensation across countries and coding experience" />
+      <p><em>Figure 3 – Compensation and Coding Experience</em></p>
+      
+      <p>
+        There is a clear spike in the salary for developers in India. This is
+        not surprising.
+      </p>
+      <blockquote class="quote">
+        "The demand for Software engineers has increased exponentially in the
+        last 10 years."
+        <a href="#ref5">[5]</a>
+      </blockquote>
+
+      <p>
+        This may explain why experienced software developers in India are so
+        well-paid.
+      </p>
+
+      <p>
+        Our model achieved a Mean Squared Error of <strong>0.3486</strong> and
+        an R-squared score of <strong>0.4541</strong>, indicating that
+        approximately 45% of the variance in total compensation can be explained
+        by the features in the model.
+      </p>
+
+      <h3>Key Findings</h3>
+      <ul>
+        <li>
+          U.S. developers are consistently the highest paid over the span of 50+
+          years of professional experience.
+        </li>
+        <li>
+          Indian developers experience the sharpest salary growth, particularly
+          after 30+ years of experience.
+        </li>
+        <li>
+          The variance in compensation between countries becomes more pronounced
+          after 20 years of professional coding.
+        </li>
+      </ul>
+
+      <h2>Conclusion</h2>
+      <p>
+        The Stack Overflow survey serves as a vital resource for the developer
+        community, providing insights into trends such as job satisfaction,
+        developer attitudes toward AI, and compensation dynamics across various
+        regions.
+      </p>
+
+      <h3>References</h3>
+      <ul>
+        <li><a name="ref1"></a>[1] Source for job satisfaction study</li>
+        <li><a name="ref2"></a>[2] Article discussing AI challenges in software development</li>
+        <li><a name="ref3"></a>[3] Scikit-Learn documentation for K-Means Clustering</li>
+        <li><a name="ref4"></a>[4] Scikit-Learn documentation for Ridge Regression</li>
+        <li><a name="ref5"></a>[5] Source discussing the demand for software engineers in India</li>
+      </ul>
+    </div>
+  </body>
+</html>
