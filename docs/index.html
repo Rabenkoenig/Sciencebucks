@@ -3,25 +3,25 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Insights from the 2024 StackOverflow Survey</title>
+    <title>Offer Response Analysis</title>
     <style>
       body {
         font-family: Arial, sans-serif;
         line-height: 1.6;
         margin: 20px;
-        color: rgb(255, 255, 227);
-        background-color: rgb(0, 36, 81);
+        color: rgb(178, 226, 210);
+        background-color: rgb(14, 32, 26);
       }
       h1 {
         text-align: center;
-        color: rgb(204, 204, 204);
+        color: rgb(180, 230, 230);
       }
 
       h2 {
-        color: rgb(204, 204, 204);
+        color: rgb(180, 230, 230);
       }
       a {
-        color: rgb(239, 157, 145);
+        color: rgb(230, 180, 230);
       }
 
       p {
@@ -52,17 +52,6 @@
         margin: 20px 0;
       }
 
-      .cluster {
-        border: 1px solid #ddd;
-        padding: 15px;
-        margin: 15px 0;
-        border-radius: 5px;
-      }
-
-      .cluster h2 {
-        margin-top: 0;
-      }
-
       .summary {
         font-weight: bold;
       }
@@ -71,226 +60,146 @@
 
   <body>
     <div class="container">
-      <h1>Unlock the Developers' Collective Knowledge</h1>
-      <img src="collective_knowledge.PNG" alt="Collective Knowledge" />
+      <h1>Starbucks Analysis</h1>
+      <img src="green_cafe.jpg" alt="cafe" />
+      <p>
+        Starbucks has been using various marketing offers, such as Buy One Get
+        One (BOGO), Discount, and Informational campaigns, to engage their
+        customers. The dataset used for this analysis contains user interaction
+        events with these offers, including when an offer was received, viewed,
+        or completed. The goal of this analysis is to understand which
+        demographics and channels are most effective in driving offer
+        completions and to provide insights for optimizing future marketing
+        strategies.
+      </p>
 
       <p>
-        The 2024 StackOverflow survey reveals critical insights into the
-        developer community, focusing on job satisfaction, AI tools, and the
-        relationship between coding experience and compensation. This analysis
-        is geared toward stakeholders interested in understanding the evolving
-        landscape of software development.
+        This analysis aims to understand the effectiveness of different
+        marketing offers and how users of varying demographics respond to them.
+        By evaluating metrics such as the Received-to-View Rate and
+        View-to-Completion Rate, we provide actionable insights into the
+        behavior of users and suggest possible improvements for marketing
+        strategies.
       </p>
-      <p>Therefore, we want to answer the following three questions:</p>
+
+      <h2>Exploratory Data Analysis (EDA) Insights</h2>
+      <p>
+        During our initial exploratory data analysis, we calculated several
+        metrics to evaluate user interactions with offers. These metrics
+        included:
+      </p>
       <ul>
         <li>
-          <a href="#q1"
-            >Do developers who frequently visit Stack Overflow report higher job
-            satisfaction?</a
-          >
+          <strong>Received-to-View Rate:</strong> 74.98% of users who received
+          an offer viewed it.
         </li>
         <li>
-          <a href="#q2"
-            >How does the usage of AI tools correlate with developers' concerns
-            about AI's potential threats?</a
-          >
+          <strong>View-to-Completion Rate:</strong> 65.07% of users who viewed
+          an offer went on to complete it.
         </li>
         <li>
-          <a href="#q3"
-            >What is the relationship between years of professional coding
-            experience and total compensation across the top 10 different
-            countries?</a
-          >
+          <strong>Overall Completion Rate:</strong> 48.79% of users who received
+          an offer eventually completed it.
+        </li>
+      </ul>
+      <p>
+        The results highlight a strong engagement from users after viewing
+        offers. However, improving the Received-to-View Rate and the
+        View-to-Completion Rate could significantly boost overall completion.
+      </p>
+
+      <h2>Modeling Approach</h2>
+      <p>
+        To predict which users are most likely to complete an offer, we built a
+        Random Forest Classifier. The model was fine-tuned using GridSearchCV,
+        which helped in identifying the best hyperparameters. After careful
+        evaluation, the final model achieved an accuracy of
+        <strong>91%</strong> on the test set. The feature importance plot below
+        highlights which variables had the most impact on offer completion.
+      </p>
+      <img
+        src="feature_importance.png"
+        alt="Feature Importance for Random Forest Classifier"
+      />
+      <p><em>Figure 1 – Feature Importance</em></p>
+
+      <h2>Evaluation Results</h2>
+      <p>
+        The confusion matrix and ROC curve below provide additional insights
+        into the model's performance. The model showed a strong ability to
+        predict users who would not complete an offer (precision:
+        <strong>90%</strong>, recall: <strong>100%</strong> for class 0), but
+        there is room for improvement in identifying users who will complete an
+        offer.
+      </p>
+      <img
+        src="confusion_matrix.png"
+        alt="Confusion Matrix for Random Forest Classifier"
+      />
+      <p><em>Figure 2 – Confusion Matrix</em></p>
+      <img src="roc_curve.png" alt="ROC Curve for Random Forest Classifier" />
+      <p><em>Figure 3 – ROC Curve</em></p>
+
+      <h2>Key Findings</h2>
+      <p>
+        Our analysis reveals the following key findings regarding user
+        engagement and offer responses:
+      </p>
+      <ul>
+        <li>
+          <strong>Most Important Factors:</strong> The features
+          <em>event_offer received</em> and <em>event_offer viewed</em> were the
+          most important predictors of offer completion.
+        </li>
+        <li>
+          <strong>Channel Effectiveness:</strong> The <em>web</em> channel was
+          the most effective in driving offer completions, followed by
+          <em>mobile</em> and <em>email</em>.
+        </li>
+        <li>
+          <strong>Demographic Insights:</strong> Younger users (categorized as
+          'Youth' and 'Young Adults') were more likely to view and complete
+          offers, suggesting targeted marketing efforts may be more effective
+          for this group.
         </li>
       </ul>
 
-      <h2>
-        <a name="q1"></a>
-        1. Do developers who frequently visit Stack Overflow report higher job
-        satisfaction?
-      </h2>
-
-      <p>As we know from <a href="#ref1">[1]</a>:</p>
-
-      <blockquote class="quote">
-        "Companies looking to enhance employee satisfaction should consider
-        encouraging participation in hobbies and open-source projects, offer
-        flexible remote work options, and understand the unique needs of
-        developers in different regions."
-      </blockquote>
-
+      <h2>Challenges and Recommendations</h2>
       <p>
-        Does using Stack Overflow also improve job satisfaction? Since it is one
-        of the most used Q&A forums for developers, it seems natural to expect a
-        correlation with overall job satisfaction. However, according to Figure
-        1, there is no significant improvement in overall job satisfaction.
+        One challenge encountered was
+        <strong>offer response attribution</strong>. Determining which channels
+        and offer types had the most influence on user decisions can be complex,
+        as many users engage through multiple channels. The importance of
+        accurately attributing offer responses cannot be understated, especially
+        for optimizing marketing budgets.
       </p>
-      <img src="q1_job_satisfaction.PNG" alt="Job satisfaction data visualization" />
-      <p><em>Figure 1 – Job Satisfaction</em></p>
       <p>
-        <strong>Conclusion:</strong> Unfortunately, it seems that neither
-        visiting Stack Overflow nor participating in the Q&A section directly
-        impacts job satisfaction. The average job satisfaction remains
-        consistent, regardless of whether someone visits Stack Overflow rarely
-        or frequently. Additionally, the low correlation suggests that more
-        frequent visits to Stack Overflow do not have a direct effect on job
-        satisfaction.
+        <strong>Improvement Ideas:</strong> Future improvements could include
+        incorporating additional data, such as user location or seasonality, to
+        gain deeper insights. Additionally, further analysis into different
+        channel combinations might reveal synergies that could drive higher
+        engagement.
       </p>
 
-      <h2>
-        <a name="q2"></a>
-        2. How does the usage of AI tools correlate with developers' concerns
-        about AI's potential threats?
-      </h2>
-      <p>
-        To answer this question, we clustered developers based on their concerns
-        about AI, their usage of AI tools, and the challenges they foresee. It
-        is a high-risk, high-reward challenge that the community must overcome
-        <a href="#ref2">[2]</a>. We used K-Means Clustering from the Scikit-Learn
-        Python module <a href="#ref3">[3]</a> to identify three types of
-        developers and their opinions about AI as a threat to their jobs.
-      </p>
-      <img src="q2_ai_usage.PNG" alt="AI usage and concern clustering visualization" />
-      <p><em>Figure 2 – AI Usage and Concerns</em></p>
-
-      <p>
-        <strong>Conclusion:</strong> The clustering analysis reveals distinct
-        attitudes and perceptions regarding AI adoption and associated
-        challenges among the surveyed participants. Here’s a summary of the key
-        clusters:
-      </p>
-
-      <div class="cluster">
-        <h2>Cluster 0</h2>
-        <p>
-          <strong>AI Selection:</strong> Moderate inclination towards AI
-          adoption.
-        </p>
-        <p>
-          <strong>AI Trust:</strong> Highest trust level in AI technologies,
-          indicating confidence in AI outputs.
-        </p>
-        <p>
-          <strong>Perceived Threat:</strong> Moderate concern regarding AI
-          threats, suggesting awareness of risks but an overall positive
-          outlook.
-        </p>
-        <p class="summary">
-          <strong>Summary:</strong> Participants in this cluster show a positive
-          attitude toward AI adoption, characterized by strong trust in AI
-          technologies.
-        </p>
-      </div>
-
-      <div class="cluster">
-        <h2>Cluster 1</h2>
-        <p>
-          <strong>AI Selection:</strong> Similar inclination towards AI
-          adoption.
-        </p>
-        <p>
-          <strong>AI Trust:</strong> Slightly lower trust level, indicating more
-          skepticism.
-        </p>
-        <p>
-          <strong>Perceived Threat:</strong> Moderate AI threat perception,
-          reflecting cautiousness about AI risks.
-        </p>
-        <p class="summary">
-          <strong>Summary:</strong> This cluster exhibits a slightly more
-          skeptical view of AI adoption, with considerable concerns about the
-          reliability of AI outputs.
-        </p>
-      </div>
-
-      <div class="cluster">
-        <h2>Cluster 2</h2>
-        <p>
-          <strong>AI Selection:</strong> Highest inclination towards AI
-          adoption, indicating a proactive stance.
-        </p>
-        <p>
-          <strong>AI Trust:</strong> Moderate trust level, suggesting
-          confidence, though slightly cautious.
-        </p>
-        <p>
-          <strong>Perceived Threat:</strong> Lowest perceived threat, indicating
-          less concern about AI risks.
-        </p>
-        <p class="summary">
-          <strong>Summary:</strong> Participants in this cluster have a very
-          favorable view of AI, showing confidence and a lack of perceived
-          challenges.
-        </p>
-      </div>
-
-      <h2>
-        <a name="q3"></a>
-        3. What is the relationship between years of professional coding
-        experience and total compensation across the top 10 different countries?
-      </h2>
-      <p>
-        We used the survey responses to develop a ridge model with the help of
-        the Scikit-Learn module <a href="#ref4">[4]</a>. We then plotted a
-        diagram for the top 10 countries and their compensation over years of
-        professional coding. The results were quite remarkable.
-      </p>
-      <img src="q3_compensation.PNG" alt="Compensation across countries and coding experience" />
-      <p><em>Figure 3 – Compensation and Coding Experience</em></p>
-      
-      <p>
-        There is a clear spike in the salary for developers in India. This is
-        not surprising.
-      </p>
-      <blockquote class="quote">
-        "The demand for Software engineers has increased exponentially in the
-        last 10 years."
-        <a href="#ref5">[5]</a>
-      </blockquote>
-
-      <p>
-        This may explain why experienced software developers in India are so
-        well-paid.
-      </p>
-
-      <p>
-        Our model achieved a Mean Squared Error of <strong>0.3486</strong> and
-        an R-squared score of <strong>0.4541</strong>, indicating that
-        approximately 45% of the variance in total compensation can be explained
-        by the features in the model.
-      </p>
-
-      <h3>Key Findings</h3>
+      <h2>References</h2>
       <ul>
         <li>
-          U.S. developers are consistently the highest paid over the span of 50+
-          years of professional experience.
+          <a href="#ref1"
+            >[1] Scikit-Learn Documentation for Random Forest Classifier</a
+          >
         </li>
         <li>
-          Indian developers experience the sharpest salary growth, particularly
-          after 30+ years of experience.
+          <a href="#ref2"
+            >[2] Article discussing class imbalance solutions in machine
+            learning</a
+          >
         </li>
         <li>
-          The variance in compensation between countries becomes more pronounced
-          after 20 years of professional coding.
+          <a href="#ref3"
+            >[3] Source discussing the impact of different marketing channels on
+            user behavior</a
+          >
         </li>
-      </ul>
-
-      <h2>Conclusion</h2>
-      <p>
-        The Stack Overflow survey serves as a vital resource for the developer
-        community, providing insights into trends such as job satisfaction,
-        developer attitudes toward AI, and compensation dynamics across various
-        regions.
-      </p>
-
-      <h3>References</h3>
-      <ul>
-        <li><a name="ref1"></a>[1] Source for job satisfaction study</li>
-        <li><a name="ref2"></a>[2] Article discussing AI challenges in software development</li>
-        <li><a name="ref3"></a>[3] Scikit-Learn documentation for K-Means Clustering</li>
-        <li><a name="ref4"></a>[4] Scikit-Learn documentation for Ridge Regression</li>
-        <li><a name="ref5"></a>[5] Source discussing the demand for software engineers in India</li>
       </ul>
     </div>
   </body>
