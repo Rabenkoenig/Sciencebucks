@@ -289,7 +289,7 @@
         applying machine learning techniques to create predictive models.
       </p>
 
-      <img src="user.jpg" alt="typical user">
+      <img src="user.jpg" alt="typical user" />
       <h3>Overall Approach and Methodology</h3>
       <p>
         The overall approach began by organizing the project in a modular
@@ -358,112 +358,1017 @@
       </ul>
 
       <h2>Discussion of the Expected Solution</h2>
-      <p>The proposed solution integrates several components that work together to address the problem effectively:</p>
-      <h3>Overall Architecture or Workflow</h3>
-      <p>The project follows a well-defined workflow that integrates data preprocessing, feature engineering, modeling, and evaluation stages:</p>
-      <ul>
-        <li><strong>Data Preprocessing</strong>: This step involved preparing and cleaning the data by handling missing values, encoding categorical variables, and engineering features. These preprocessed data were then merged to create a unified dataset that captured user, offer, and interaction details comprehensively.</li>
-        <li><strong>Modeling</strong>: We aimed to train a <strong>Random Forest Classifier</strong> model capable of predicting which demographic groups would be most responsive to each type of offer and the optimal channels to reach them. The model was chosen for its robustness in handling a mix of feature types and its capability to manage complex interactions between variables. Additionally, we used GridSearchCV for hyperparameter tuning to optimize model performance.</li>
-        <li><strong>Evaluation</strong>: Model evaluation was done using metrics like accuracy, precision, recall, and F1-score. These metrics helped us understand the model's effectiveness in predicting offer completions. The evaluation results were visualized using feature importance plots, confusion matrices, and ROC curves to interpret the model's behavior and identify areas for improvement.</li>
-
-      <h2>Exploratory Data Analysis (EDA) Insights</h2>
       <p>
-        During our initial exploratory data analysis, we calculated several
-        metrics to evaluate user interactions with offers. These metrics
-        included:
+        The proposed solution integrates several components that work together
+        to address the problem effectively:
+      </p>
+      <h3>Overall Architecture or Workflow</h3>
+      <p>
+        The project follows a well-defined workflow that integrates data
+        preprocessing, feature engineering, modeling, and evaluation stages:
       </p>
       <ul>
         <li>
-          <strong>Received-to-View Rate:</strong> 74.98% of users who received
-          an offer viewed it.
+          <strong>Data Preprocessing</strong>: This step involved preparing and
+          cleaning the data by handling missing values, encoding categorical
+          variables, and engineering features. These preprocessed data were then
+          merged to create a unified dataset that captured user, offer, and
+          interaction details comprehensively.
         </li>
         <li>
-          <strong>View-to-Completion Rate:</strong> 65.07% of users who viewed
-          an offer went on to complete it.
+          <strong>Modeling</strong>: We aimed to train a
+          <strong>Random Forest Classifier</strong> model capable of predicting
+          which demographic groups would be most responsive to each type of
+          offer and the optimal channels to reach them. The model was chosen for
+          its robustness in handling a mix of feature types and its capability
+          to manage complex interactions between variables. Additionally, we
+          used GridSearchCV for hyperparameter tuning to optimize model
+          performance.
         </li>
         <li>
-          <strong>Overall Completion Rate:</strong> 48.79% of users who received
-          an offer eventually completed it.
+          <strong>Evaluation</strong>: Model evaluation was done using metrics
+          like accuracy, precision, recall, and F1-score. These metrics helped
+          us understand the model's effectiveness in predicting offer
+          completions. The evaluation results were visualized using feature
+          importance plots, confusion matrices, and ROC curves to interpret the
+          model's behavior and identify areas for improvement.
+        </li>
+      </ul>
+      <h2>Data Preprocessing</h2>
+      <p>
+        In this section, we outline the various steps taken to preprocess the
+        data, ensuring it is clean, consistent, and ready for analysis. Each
+        step includes a brief description and its intended purpose, making it
+        easier to understand the transformation process involved.
+      </p>
+
+      <h3>1. Handle Missing Values, Duplicates, and Outliers</h3>
+      <p>To ensure data quality, the following steps were taken:</p>
+      <ul>
+        <li>
+          Checked for missing values across all datasets and filtered out
+          problematic entries (e.g., rows with inconsistent values such as age
+          118 with missing gender and income).
+        </li>
+        <li>
+          Filtered out redundant or outlier records to improve data reliability.
+        </li>
+      </ul>
+
+      <h3>2. Data Transformation and Feature Encoding</h3>
+      <h4>Portfolio Dataset</h4>
+      <ul>
+        <li>
+          Applied one-hot encoding to the <code>channels</code> column to
+          represent the various marketing channels.
+        </li>
+        <li>
+          Performed one-hot encoding on the <code>offer_type</code> column, and
+          removed the <code>offer_type_informational</code> column to reduce
+          redundancy.
+        </li>
+      </ul>
+
+      <h4>Profile Dataset</h4>
+      <ul>
+        <li>
+          Filtered rows where age was 118 and gender and income were missing, as
+          they were identified as unreliable data.
+        </li>
+        <li>
+          Converted the <code>became_member_on</code> column to datetime format
+          for better date handling.
+        </li>
+        <li>
+          Applied one-hot encoding to the <code>gender</code> column and dropped
+          the <code>gender_O</code> column to avoid redundancy.
+        </li>
+        <li>
+          Scaled the <code>income</code> column by dividing it by 1000 and
+          renamed it to <code>income/k</code> for easier readability.
+        </li>
+      </ul>
+
+      <h4>Transcript Dataset</h4>
+      <ul>
+        <li>
+          Normalized the <code>value</code> column, which contained
+          dictionaries, by expanding them into separate columns.
+        </li>
+        <li>
+          Consolidated the <code>offer id</code> and
+          <code>offer_id</code> columns into a single column named
+          <code>offer_id</code>.
+        </li>
+        <li>
+          Filled missing values in the <code>amount</code> and
+          <code>reward</code> columns with 0, and filled
+          <code>offer_id</code> with an empty string for missing entries.
+        </li>
+        <li>
+          Applied one-hot encoding to the <code>event</code> column and dropped
+          the <code>event_transaction</code> column to reduce redundancy.
+        </li>
+      </ul>
+
+      <h3>3. Merging Datasets</h3>
+      <p>To enable comprehensive analysis, all three datasets were merged:</p>
+      <ul>
+        <li>
+          Profile and Transcript datasets were merged based on user IDs, and the
+          redundant <code>id</code> column was dropped.
+        </li>
+        <li>
+          The merged dataset was then combined with the Portfolio dataset using
+          the <code>offer_id</code> key, and redundant columns were dropped.
+        </li>
+      </ul>
+
+      <h3>4. Final Cleaning and Saving Processed Data</h3>
+      <ul>
+        <li>
+          Filled missing values for demographic information and filtered out
+          rows where such data was not available, as this information is crucial
+          for identifying responsive user groups.
+        </li>
+        <li>
+          Dropped unnecessary columns like <code>amount</code> and
+          <code>reward</code> to maintain focus on relevant analysis attributes.
+        </li>
+        <li>
+          Saved the fully processed dataset as a CSV file for further analysis
+          and exploration.
+        </li>
+      </ul>
+
+      <h3>Conclusion</h3>
+      <p>
+        By following these preprocessing steps, the data was thoroughly cleaned,
+        transformed, and made ready for exploratory data analysis and model
+        building. This process helps ensure that the dataset is of high quality
+        and facilitates accurate analysis to achieve meaningful insights.
+      </p>
+      <h2>Metrics with Justification</h2>
+      <p>
+        In this section, we define the key metrics used for evaluating the
+        effectiveness of the offer strategies and justify their selection. These
+        metrics are used to assess user interactions with the offers and
+        understand how various demographic groups respond to different types of
+        offers.
+      </p>
+
+      <h2>1. Offer Funnel Metrics</h2>
+      <h3>Goal</h3>
+      <p>Measure how users interact with offers from start to completion.</p>
+      <h3>Data Sources</h3>
+      <ul>
+        <li>
+          <strong>transcript</strong>: For tracking offer events such as
+          received, viewed, and completed.
+        </li>
+        <li>
+          <strong>portfolio</strong>: To identify offer characteristics like
+          type (BOGO, discount, informational).
+        </li>
+      </ul>
+      <h3>Steps</h3>
+      <p>
+        Filter the <code>transcript</code> by <code>event</code> to identify
+        "offer received," "offer viewed," and "offer completed" actions. For
+        each offer in the <code>portfolio</code>, calculate:
+      </p>
+      <ul>
+        <li>
+          <strong>Received-to-View Rate</strong>: How many users viewed the
+          offer after receiving it.
+        </li>
+        <li>
+          <strong>View-to-Completion Rate</strong>: Of the offers viewed, how
+          many were completed.
+        </li>
+        <li>
+          <strong>Overall Completion Rate</strong>: The percentage of received
+          offers that were eventually completed.
+        </li>
+      </ul>
+      <h3>Key Findings</h3>
+      <ul>
+        <li>
+          <strong>Received-to-View Rate</strong>: 74.98% - Approximately 75% of
+          received offers were viewed by users. This suggests effective delivery
+          channels that capture user attention.
+        </li>
+        <li>
+          <strong>View-to-Completion Rate</strong>: 65.07% - About 65% of viewed
+          offers were completed. This indicates reasonable offer design but also
+          shows room for improvement.
+        </li>
+        <li>
+          <strong>Overall Completion Rate</strong>: 48.79% - Less than half of
+          all offers received were completed, highlighting opportunities for
+          optimizing offer structure and incentives.
+        </li>
+      </ul>
+      <h3>Insights</h3>
+      <p>
+        The high received-to-view rate suggests that initial marketing and
+        communication strategies are effective. However, the lower completion
+        rate indicates that more work is needed to improve the offer funnel,
+        potentially by simplifying the requirements or increasing the perceived
+        value of offers.
+      </p>
+
+      <h2>2. Demographic-Based Offer Engagement Rate</h2>
+      <h3>Goal</h3>
+      <p>
+        Evaluate how users of different demographic segments engage with offers
+        by identifying which age groups, income brackets, and genders are most
+        likely to view or complete an offer after receiving it.
+      </p>
+      <h3>Data Sources</h3>
+      <ul>
+        <li>
+          <strong>transcript</strong>: Includes event information related to
+          offer activities (offer received, viewed, completed).
+        </li>
+        <li>
+          <strong>profile</strong>: Contains demographic data such as age,
+          gender, and income.
+        </li>
+      </ul>
+      <h3>Steps</h3>
+      <ul>
+        <li>Group data by demographic variables:</li>
+        <ul>
+          <li><strong>Age Group</strong>: Group by age.</li>
+          <li><strong>Income Group</strong>: Group by income brackets.</li>
+          <li><strong>Gender Group</strong>: Group by gender.</li>
+        </ul>
+        <li>Calculate engagement metrics for each demographic group:</li>
+        <ul>
+          <li>
+            <strong>Total Offers Received</strong>: Aggregate the number of
+            offers received for each demographic.
+          </li>
+          <li>
+            <strong>Total Offers Viewed</strong>: Aggregate the number of offers
+            viewed for each demographic.
+          </li>
+          <li>
+            <strong>Total Offers Completed</strong>: Aggregate the number of
+            offers completed for each demographic.
+          </li>
+          <li>
+            Calculate response rates for each group, such as
+            <strong>View Rate</strong> (total viewed / total received) and
+            <strong>Completion Rate</strong> (total completed / total received).
+          </li>
+        </ul>
+      </ul>
+      <h3>Key Findings and Insights</h3>
+      <h4>Age Group Engagement</h4>
+      <p>
+        Older age groups tend to have higher view and completion rates compared
+        to younger users. Targeting offers specifically to older demographics
+        might result in higher completion rates.
+      </p>
+      <img
+        src="Completion_Rates_by_age_offer_Type.png"
+        alt="Completion Rates by Age and Offer Type"
+      />
+
+      <h4>Income Group Engagement</h4>
+      <p>
+        Higher-income individuals have higher view and completion rates,
+        indicating a preference for offers that are more exclusive or provide
+        higher rewards.
+      </p>
+      <img
+        src="Completion_Rates_by_income_offer_Type.png"
+        alt="Completion Rates by Income and Offer Type"
+      />
+
+      <h4>Gender Group Engagement</h4>
+      <p>
+        Engagement rates are relatively consistent across genders, suggesting
+        that gender-neutral campaigns are effective.
+      </p>
+      <img
+        src="Completion_Rates_by_gender_offer_Type.png"
+        alt="Completion Rates by Gender and Offer Type"
+      />
+
+      <h2>3. Response Rates by Demographics</h2>
+      <h3>Goal</h3>
+      <p>
+        Understand which demographic groups respond best to each offer type to
+        tailor offers accordingly.
+      </p>
+      <h3>Data Sources</h3>
+      <ul>
+        <li>
+          <strong>profile</strong>: For demographic data, including age, income,
+          and gender.
+        </li>
+        <li>
+          <strong>transcript</strong>: For tracking offer responses by user.
+        </li>
+        <li>
+          <strong>portfolio</strong>: For offer characteristics to map responses
+          to specific offer types.
+        </li>
+      </ul>
+      <h3>Steps</h3>
+      <ul>
+        <li>
+          Merge <code>profile</code> and <code>transcript</code> datasets to
+          create demographic segments.
+        </li>
+        <li>
+          Calculate view and completion rates for each segment and compare
+          across different offer types.
+        </li>
+      </ul>
+      <h3>Key Findings and Insights</h3>
+      <h4>Age Group Response</h4>
+      <p>
+        Adults and seniors are most engaged with offers, especially discount
+        offers. Designing targeted campaigns for these age groups with
+        discount-based incentives could enhance completion rates further.
+      </p>
+      <img
+        src="View_Rates_by_age_offer_Type.png"
+        alt="View Rates by Age and Offer Type"
+      />
+
+      <h4>Income Group Response</h4>
+      <p>
+        Higher-income individuals are more responsive to discount offers,
+        suggesting that offers with greater monetary rewards can maximize
+        engagement in this group.
+      </p>
+      <img
+        src="View_Rates_by_income_offer_Type.png"
+        alt="View Rates by Income and Offer Type"
+      />
+
+      <h4>Gender Group Response</h4>
+      <p>
+        There is no significant difference in gender-based engagement. However,
+        the "Other" gender group shows slightly higher engagement rates,
+        presenting an opportunity for more personalized marketing campaigns.
+      </p>
+      <img
+        src="View_Rates_by_gender_offer_Type.png"
+        alt="View Rates by Gender and Offer Type"
+      />
+      <h2>Exploratory Data Analysis (EDA)</h2>
+      <p>
+        In this section, we conduct an exploratory data analysis to document the
+        key findings from the data, highlighting notable patterns, trends, and
+        insights gained through visualizations and statistical summaries.
+      </p>
+
+      <h3>1. Distribution of Channels Used for Delivering Offers</h3>
+      <img
+        src="Channels_distribution.png"
+        alt="Distribution of Channels Used for Delivering Offers"
+        style="width: 100%; height: auto"
+      />
+      <h4>Observations</h4>
+      <ul>
+        <li>
+          <strong>Email</strong> appears to be the most commonly used channel
+          for delivering offers, followed by <strong>mobile</strong>.
+        </li>
+        <li>
+          <strong>Social</strong> has the lowest frequency compared to other
+          channels.
+        </li>
+        <li>
+          The <strong>web</strong> channel also has a significant number of
+          offers delivered but falls below <strong>email</strong> and
+          <strong>mobile</strong>.
+        </li>
+      </ul>
+      <h4>Insights</h4>
+      <ul>
+        <li>
+          <strong>Email</strong> and <strong>mobile</strong> are the preferred
+          communication methods for delivering offers, possibly because they are
+          more direct and provide higher customer reach.
+        </li>
+        <li>
+          <strong>Social</strong> media is less frequently used, suggesting that
+          customers might be less responsive to this channel or that Starbucks
+          emphasizes more direct communication channels.
+        </li>
+      </ul>
+
+      <h3>2. Distribution of Offer Types</h3>
+      <img
+        src="Offer_types_distribution.png"
+        alt="Distribution of Offer Types"
+        style="width: 100%; height: auto"
+      />
+      <h4>Observations</h4>
+      <ul>
+        <li>
+          <strong>BOGO</strong> and <strong>Discount</strong> offers are almost
+          equally distributed, with both having significantly higher frequencies
+          compared to <strong>Informational</strong> offers.
+        </li>
+        <li>
+          <strong>Informational</strong> offers are the least frequently
+          distributed.
+        </li>
+      </ul>
+      <h4>Insights</h4>
+      <ul>
+        <li>
+          The high frequency of <strong>BOGO</strong> and
+          <strong>Discount</strong> offers suggests that Starbucks relies
+          heavily on incentivizing customers to make purchases through monetary
+          rewards.
+        </li>
+        <li>
+          <strong>Informational</strong> offers are less common, which might
+          indicate they are used for brand awareness or general product
+          information rather than direct sales.
+        </li>
+        <li>
+          The near-equal distribution between <strong>BOGO</strong> and
+          <strong>Discount</strong> suggests that Starbucks is likely testing
+          both types to see which generates higher engagement or sales.
+        </li>
+      </ul>
+
+      <h3>3. Distribution of Income (in thousands)</h3>
+      <img
+        src="Income_distribution.png"
+        alt="Distribution of Income (in thousands)"
+        style="width: 100%; height: auto"
+      />
+      <h4>Observations</h4>
+      <ul>
+        <li>
+          The <strong>income</strong> distribution appears to be skewed towards
+          the lower end, with most customers falling between
+          <strong>30k</strong> and <strong>80k</strong>.
+        </li>
+        <li>
+          The peak income range seems to be around <strong>50k-60k</strong>.
+        </li>
+        <li>
+          There is a gradual decline in frequency as income increases beyond
+          <strong>80k</strong>.
+        </li>
+      </ul>
+      <h4>Insights</h4>
+      <ul>
+        <li>
+          The skewed distribution towards lower income levels might indicate
+          that the target demographic for Starbucks offers is primarily
+          middle-income customers.
+        </li>
+        <li>
+          Since the majority of customers fall between <strong>30k</strong> and
+          <strong>80k</strong>, it could be beneficial to tailor offers
+          specifically for this income range, focusing on incentives that
+          resonate with the spending habits of this group.
+        </li>
+        <li>
+          The decline beyond <strong>80k</strong> suggests that higher-income
+          customers may be less interested in Starbucks offers or simply
+          constitute a smaller portion of the target audience.
+        </li>
+      </ul>
+
+      <h3>Summary</h3>
+      <ul>
+        <li>
+          <strong>Channels</strong>: Email and mobile are the most utilized
+          channels, suggesting they are more effective or preferred by
+          customers.
+        </li>
+        <li>
+          <strong>Offer Types</strong>: BOGO and Discount offers dominate,
+          indicating a focus on driving sales through direct incentives rather
+          than purely informational campaigns.
+        </li>
+        <li>
+          <strong>Income Distribution</strong>: The majority of customers are in
+          the middle-income range, providing an opportunity to optimize offers
+          for this demographic to maximize engagement and spending.
+        </li>
+      </ul>
+
+      <h2>Modeling</h2>
+      <p>
+        In this section, we present the details of the model used in this
+        project, providing an overview of the underlying algorithms, specific
+        considerations, and modifications that were applied during the modeling
+        process. This section includes relevant code snippets to illustrate the
+        approach and methodology.
+      </p>
+
+      <h3>Purpose</h3>
+      <p>
+        The purpose of this section is to develop predictive models or
+        analytical frameworks to address project goals, utilizing appropriate
+        modeling techniques, and evaluating their performance.
+      </p>
+
+      <h3>1. Model Selection and Preprocessing</h3>
+      <p>
+        To achieve our objectives, we opted for a classification model,
+        specifically using a <strong>Random Forest Classifier</strong> due to
+        its effectiveness in handling categorical data, feature importance, and
+        robust performance in classification tasks.
+      </p>
+      <ul>
+        <li><strong>Model Type:</strong> Random Forest Classifier</li>
+        <li>
+          <strong>Features:</strong> Demographic information, offer type,
+          channels, etc.
+        </li>
+        <li>
+          <strong>Target:</strong> Whether the customer completed an offer
+          (<code>event_offer completed</code>).
+        </li>
+      </ul>
+
+      <h3>2. Data Preparation</h3>
+      <p>The following data preparation steps were taken before modeling:</p>
+      <ul>
+        <li>
+          Dropped unnecessary columns such as <code>person</code>,
+          <code>time</code>, and <code>offer_id</code> that were not
+          contributing to the predictive analysis.
+        </li>
+        <li>
+          Categorized the <code>age</code> and <code>income</code> features into
+          distinct ranges, providing more interpretability and generalization.
+        </li>
+        <li>
+          Performed one-hot encoding on the categorical columns
+          <code>age_category</code> and <code>income_category</code> to convert
+          them into numerical features.
+        </li>
+        <li>
+          Converted boolean and float columns into integer types for
+          compatibility with the Random Forest Classifier.
+        </li>
+      </ul>
+
+      <h3>3. Model Training and Evaluation</h3>
+      <p>Once the data was prepared, we proceeded with training the model:</p>
+      <ul>
+        <li>
+          Defined the features (<code>X</code>) and target variable
+          (<code>y</code>).
+        </li>
+        <li>
+          Split the dataset into training and testing sets, using an 80-20 split
+          ratio.
+        </li>
+        <li>
+          Defined a pipeline consisting of a <code>StandardScaler</code> for
+          feature scaling and the <code>RandomForestClassifier</code>.
+        </li>
+      </ul>
+      <h3>4. Model Performance</h3>
+      <p>
+        The model was evaluated using metrics such as
+        <strong>accuracy</strong> and a
+        <strong>classification report</strong> that includes precision, recall,
+        and F1-score. The accuracy score obtained for the test set was
+        <code>1.00</code>.
+      </p>
+      <pre><code>Classification Report:
+              precision    recall  f1-score   support
+
+           0       1.00      1.00      1.00     23285
+           1       1.00      1.00      1.00      6476
+
+    accuracy                           1.00     29761
+   macro avg       1.00      1.00      1.00     29761
+weighted avg       1.00      1.00      1.00     29761</code></pre>
+      <p>
+        These evaluation metrics provide a comprehensive view of how well the
+        model performs in predicting whether a customer completed an offer based
+        on their demographic data and the type of offer received.
+      </p>
+      <p>
+        <strong
+          >However, the perfect accuracy score of <code>1.00</code> indicates
+          that the model is likely overfitting. Overfitting occurs when the
+          model learns the training data too well, including noise and minor
+          details, which leads to poor generalization on unseen data. In this
+          case, the model might have memorized the training data, resulting in
+          overly optimistic evaluation metrics on the test set.</strong
+        >
+      </p>
+      <p>Potential reasons for overfitting in this model include:</p>
+      <ul>
+        <li>
+          Using too many features without adequate feature selection or
+          reduction, which can cause the model to pick up on irrelevant
+          patterns.
+        </li>
+        <li>
+          Insufficient regularization of the Random Forest Classifier, leading
+          to high model complexity.
         </li>
       </ul>
       <p>
-        The results highlight a strong engagement from users after viewing
-        offers. However, improving the Received-to-View Rate and the
-        View-to-Completion Rate could significantly boost overall completion.
+        To address overfitting, steps such as hyperparameter tuning, feature
+        selection, or trying simpler models can be taken to improve the
+        generalizability of the model.
+      </p>
+      <h2>Hyperparameter Tuning</h2>
+      <p>
+        In this section, we describe the process of hyperparameter tuning for
+        the selected Random Forest model. Hyperparameter tuning is crucial for
+        improving the performance of the model and preventing overfitting or
+        underfitting. The tuning process allows us to find the best combination
+        of parameters to achieve optimal results.
       </p>
 
-      <h2>Modeling Approach</h2>
+      <h3>Purpose</h3>
       <p>
-        To predict which users are most likely to complete an offer, we built a
-        Random Forest Classifier. The model was fine-tuned using GridSearchCV,
-        which helped in identifying the best hyperparameters. After careful
-        evaluation, the final model achieved an accuracy of
-        <strong>91%</strong> on the test set. The feature importance plot below
-        highlights which variables had the most impact on offer completion.
+        The purpose of hyperparameter tuning is to improve model performance and
+        prevent overfitting by finding the ideal combination of hyperparameter
+        values for the Random Forest Classifier. This ensures that the model
+        generalizes well to new, unseen data.
       </p>
-      <img
-        src="feature_importance.png"
-        alt="Feature Importance for Random Forest Classifier"
-      />
-      <p><em>Figure 1 – Feature Importance</em></p>
 
-      <h2>Evaluation Results</h2>
+      <h3>1. Hyperparameter Tuning Process</h3>
       <p>
-        The confusion matrix and ROC curve below provide additional insights
-        into the model's performance. The model showed a strong ability to
-        predict users who would not complete an offer (precision:
-        <strong>90%</strong>, recall: <strong>100%</strong> for class 0), but
-        there is room for improvement in identifying users who will complete an
-        offer.
+        We used <strong>GridSearchCV</strong> to perform hyperparameter tuning.
+        Grid search is an exhaustive search over specified parameter values,
+        using cross-validation to evaluate model performance. Below, we outline
+        the parameters that were tuned and the rationale behind each selection:
+      </p>
+      <ul>
+        <li>
+          <strong>n_estimators</strong>: The number of trees in the forest. We
+          chose values of <code>3, 5, 10</code> to keep the model simple and
+          prevent overfitting.
+        </li>
+        <li>
+          <strong>max_depth</strong>: The maximum depth of the tree. Limiting
+          tree depth helps reduce overfitting by restricting how complex the
+          model can become. Values used were <code>3, 4, 5</code>.
+        </li>
+        <li>
+          <strong>min_samples_split</strong>: The minimum number of samples
+          required to split an internal node. Larger values prevent the model
+          from learning overly specific patterns, thereby reducing overfitting.
+          Values used were <code>3, 4, 5, 7</code>.
+        </li>
+        <li>
+          <strong>min_samples_leaf</strong>: The minimum number of samples
+          required to be at a leaf node. This helps create more generalized leaf
+          nodes. Values used were <code>3, 4, 5, 7</code>.
+        </li>
+        <li>
+          <strong>max_features</strong>: The number of features to consider when
+          looking for the best split. We used <code>"sqrt"</code> and
+          <code>"log2"</code> to limit the number of features considered at each
+          split, helping prevent overfitting.
+        </li>
+      </ul>
+
+      <h3>2. Grid Search Implementation</h3>
+      <p>
+        We used <code>GridSearchCV</code> from scikit-learn to perform the
+        tuning.
+      </p>
+      <h3>3. Results and Insights</h3>
+      <p>
+        After tuning the hyperparameters, the best parameters were obtained
+        based on cross-validation scores. The results showed that:
+      </p>
+      <pre><code>Best Parameters: <br>
+        {'classifier__max_depth': 5,<br> 
+        'classifier__max_features': 'sqrt',<br>
+        'classifier__min_samples_leaf': 3,<br> 
+        'classifier__min_samples_split': 3,<br> 
+        'classifier__n_estimators': 10}<br>
+        Best Cross-Validation Score: 0.86
+      </code></pre>
+      <p>
+        The hyperparameter tuning process aimed to reduce the model's complexity
+        and improve generalization. The selected parameters helped prevent
+        overfitting by limiting the depth of the trees, reducing the number of
+        features considered, and ensuring minimum samples at leaf nodes and
+        internal splits.
+      </p>
+
+      <h3>4. Model Evaluation</h3>
+      <p>
+        After applying the best hyperparameters, the tuned model was evaluated
+        on the test set:
+      </p>
+      <pre><code>from sklearn.metrics import accuracy_score, classification_report
+
+# Make predictions on the test set
+y_pred_gs = grid_search.predict(X_test)
+
+# Step 6: Evaluate the model
+print(f"Accuracy: {accuracy_score(y_test, y_pred_gs):.2f}")
+print("Classification Report:")
+print(classification_report(y_test, y_pred_gs))</code></pre>
+      <p>
+        The accuracy of the tuned model was <code>0.91</code>, which, while
+        lower than the previous overfitted model, provides a more realistic and
+        generalizable performance evaluation. Below is the classification
+        report:
+      </p>
+      <pre><code>Classification Report:
+              precision    recall  f1-score   support
+
+           0       0.90      1.00      0.95     23285
+           1       1.00      0.59      0.74      6476
+
+    accuracy                           0.91     29761
+   macro avg       0.95      0.80      0.84     29761
+weighted avg       0.92      0.91      0.90     29761</code></pre>
+      <p>
+        Although the accuracy decreased compared to the overfitted model, the
+        generalization of the model improved significantly, which is critical
+        for real-world predictive performance.
+      </p>
+      <h2>Results</h2>
+      <p>
+        In this section, we present the results of the model evaluation and
+        performance, including relevant metrics, visualizations, and other
+        outputs that demonstrate the effectiveness of the solution. The results
+        are interpreted to highlight key insights or observations that were
+        derived from the model's predictions.
+      </p>
+
+      <h3>1. Confusion Matrix</h3>
+      <p>
+        The confusion matrix provides a visual representation of the model's
+        predictions compared to the actual values:
       </p>
       <img
         src="confusion_matrix.png"
         alt="Confusion Matrix for Random Forest Classifier"
+        style="width: 100%; height: auto"
       />
-      <p><em>Figure 2 – Confusion Matrix</em></p>
-      <img src="roc_curve.png" alt="ROC Curve for Random Forest Classifier" />
-      <p><em>Figure 3 – ROC Curve</em></p>
+      <p>
+        The confusion matrix highlights that the model correctly predicts most
+        of the non-completions, but there are some false negatives where the
+        model fails to predict the completion of offers.
+      </p>
 
-      <h2>Key Findings</h2>
+      <h3>2. Feature Importance</h3>
       <p>
-        Our analysis reveals the following key findings regarding user
-        engagement and offer responses:
+        The feature importance plot provides insights into which features were
+        most significant in predicting offer completions:
       </p>
-      <ul>
-        <li>
-          <strong>Most Important Factors:</strong> The features
-          <em>event_offer received</em> and <em>event_offer viewed</em> were the
-          most important predictors of offer completion.
-        </li>
-        <li>
-          <strong>Channel Effectiveness:</strong> The <em>web</em> channel was
-          the most effective in driving offer completions, followed by
-          <em>mobile</em> and <em>email</em>.
-        </li>
-        <li>
-          <strong>Demographic Insights:</strong> Younger users (categorized as
-          'Youth' and 'Young Adults') were more likely to view and complete
-          offers, suggesting targeted marketing efforts may be more effective
-          for this group.
-        </li>
-      </ul>
+      <img
+        src="feature_importance.png"
+        alt="Feature Importances for Random Forest Classifier"
+        style="width: 100%; height: auto"
+      />
+      <p>
+        From the feature importance plot, it is evident that the features
+        <strong>event_offer received</strong> and
+        <strong>event_offer viewed</strong> had the most influence on the
+        predictions. Other features such as <strong>offer_type_bogo</strong> and
+        <strong>offer_type_discount</strong> also played a role, indicating that
+        the type of offer impacts customer behavior.
+      </p>
 
-      <h2>Challenges and Recommendations</h2>
+      <h3>3. ROC Curve</h3>
       <p>
-        One challenge encountered was
-        <strong>offer response attribution</strong>. Determining which channels
-        and offer types had the most influence on user decisions can be complex,
-        as many users engage through multiple channels. The importance of
-        accurately attributing offer responses cannot be understated, especially
-        for optimizing marketing budgets.
+        The Receiver Operating Characteristic (ROC) curve is used to visualize
+        the trade-off between sensitivity and specificity:
       </p>
+      <img
+        src="roc_curve.png"
+        alt="ROC Curve for Random Forest Classifier"
+        style="width: 100%; height: auto"
+      />
       <p>
-        <strong>Improvement Ideas:</strong> Future improvements could include
-        incorporating additional data, such as user location or seasonality, to
-        gain deeper insights. Additionally, further analysis into different
-        channel combinations might reveal synergies that could drive higher
-        engagement.
+        The ROC curve shows that the model performs well overall, with an Area
+        Under the Curve (AUC) value of <strong>1.00</strong>, indicating a high
+        discriminative ability. However, this might also suggest a potential
+        overfitting issue, as a perfect AUC score is often a sign of a model
+        that has learned the training data too well.
       </p>
+
+      <h3>4. Comparison Table</h3>
+      <p>
+        The table below compares the performance of different model variations
+        or hyperparameter settings:
+      </p>
+      <table border="1" style="width: 100%; text-align: center">
+        <thead>
+          <tr>
+            <th>Model Variation</th>
+            <th>Accuracy</th>
+            <th>Precision (Class 1)</th>
+            <th>Recall (Class 1)</th>
+            <th>F1-Score (Class 1)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Initial Random Forest (No Tuning)</td>
+            <td>1.00</td>
+            <td>1.00</td>
+            <td>1.00</td>
+            <td>1.00</td>
+          </tr>
+          <tr>
+            <td>Tuned Random Forest</td>
+            <td>0.91</td>
+            <td>1.00</td>
+            <td>0.59</td>
+            <td>0.74</td>
+          </tr>
+        </tbody>
+      </table>
+      <p>
+        The comparison table shows that the initial model had perfect metrics,
+        suggesting overfitting, whereas the tuned model achieved a more
+        realistic and generalizable performance.
+      </p>
+
+      <h3>5. Conclusion</h3>
+      <p>
+        In conclusion, the Random Forest model with tuned hyperparameters
+        provided a more reliable and realistic assessment of customer behavior
+        compared to the overfitted model. While the accuracy of
+        <strong>0.91</strong> is strong, there is still room for improvement,
+        particularly in identifying customers who complete the offers. Future
+        steps could involve further tuning of the model, trying alternative
+        algorithms like <strong>Gradient Boosting</strong> or
+        <strong>XGBoost</strong>, and incorporating additional features that
+        capture customer engagement patterns.
+      </p>
+      <!DOCTYPE html>
+      <html lang="en">
+        <head>
+          <meta charset="UTF-8" />
+          <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0"
+          />
+          <title>Improvements and Acknowledgment</title>
+        </head>
+        <body>
+          <h2>Improvements</h2>
+          <p>
+            In this section, we identify the limitations, challenges, and areas
+            for improvement in the project. We also discuss potential
+            enhancements or future directions that could further enhance the
+            solution or address any remaining gaps.
+          </p>
+
+          <h3>Identified Challenges and Areas for Improvement</h3>
+          <ul>
+            <li>
+              <strong>Demographic Factors:</strong> The analysis revealed that
+              demographic factors such as age, gender, and income have limited
+              influence on offer completion. To address this, new features
+              related to user engagement could be developed.
+            </li>
+            <li>
+              <strong>Class Imbalance:</strong> The model showed high recall for
+              class 0 (offers not completed) but struggled with recall for class
+              1 (offers completed). This indicates a potential class imbalance
+              issue, which makes it challenging for the model to correctly
+              identify all potential positive cases.
+            </li>
+            <li>
+              <strong>Offer Response Attribution:</strong> Determining why a
+              user completed an offer remains challenging due to the complex
+              interplay of offer type, channel, timing, and user behavior.
+              Additional behavioral features could provide more insights into
+              the completion of offers.
+            </li>
+          </ul>
+
+          <h3>Improvement Ideas</h3>
+          <ul>
+            <li>
+              <strong>Feature Engineering:</strong>
+              <ul>
+                <li>
+                  Develop user engagement features that capture user behavior,
+                  such as time taken to view an offer, number of interactions
+                  before offer completion, or frequency of offer interactions.
+                  These features could provide more insight into user engagement
+                  levels.
+                </li>
+                <li>
+                  Integrate location data to identify regional differences in
+                  offer responsiveness. Additionally, considering seasonal or
+                  time-based factors might help account for fluctuations in user
+                  behavior during different times of the year (e.g., holidays,
+                  weekends).
+                </li>
+              </ul>
+            </li>
+            <li>
+              <strong>Class Imbalance Handling:</strong>
+              <ul>
+                <li>
+                  Apply techniques like <strong>SMOTE</strong> (Synthetic
+                  Minority Over-sampling Technique) to balance the dataset and
+                  improve model performance for minority classes.
+                </li>
+                <li>
+                  Adjust class weights in the model to handle the imbalance more
+                  effectively.
+                </li>
+              </ul>
+            </li>
+            <li>
+              <strong>Channel-Specific Strategies:</strong>
+              <ul>
+                <li>
+                  Given that web and mobile channels performed better in driving
+                  offer completions, focusing on personalizing offers delivered
+                  through these channels might improve the overall offer
+                  completion rate.
+                </li>
+              </ul>
+            </li>
+          </ul>
+
+          <h2>Acknowledgment</h2>
+          <p>
+            We would like to express our sincere gratitude to everyone who
+            contributed to the success of this project:
+          </p>
+          <ul>
+            <li>
+              <strong>Mentors and Advisors:</strong> A special thanks to our
+              mentors for their invaluable guidance throughout the project.
+            </li>
+            <li>
+              <strong>Data Providers:</strong> We are grateful to the
+              organizations and individuals who made the data available for
+              analysis.
+            </li>
+            <li>
+              <strong>Supportive Colleagues:</strong> We acknowledge the support
+              of our colleagues, who provided feedback, shared resources, and
+              assisted in the project implementation.
+            </li>
+            <li>
+              <strong>Community Resources:</strong> We also appreciate the
+              online communities such as Stack Overflow and data science forums
+              that helped solve technical challenges during the course of this
+              project.
+            </li>
+          </ul>
+          <img src="happy_costumer.jpg" alt="happy_costumer">
+
+          <h2>Summary of Findings</h2>
+          <h3>1. Demographics and Channels Responsiveness</h3>
+          <p>
+            The analysis showed that demographic factors such as age, gender,
+            and income have limited influence on offer completion. Channels like
+            web and mobile showed higher importance in the model's predictions,
+            indicating that users who received offers through these channels
+            were more likely to respond positively.
+          </p>
+          <p>
+            Offer types like BOGO and Discount contributed moderately to model
+            predictions, while informational offers had lower completion rates,
+            highlighting the need to focus more on incentivizing offers.
+          </p>
+
+          <h3>2. Challenges</h3>
+          <p>
+            The model faced challenges such as class imbalance, where it
+            struggled to correctly identify all positive cases. Offer response
+            attribution also remained complex due to the interplay of multiple
+            factors.
+          </p>
+
+          <h3>3. Improvement Ideas</h3>
+          <ul>
+            <li>Feature engineering to capture user engagement behavior.</li>
+            <li>
+              Handling class imbalance using techniques like SMOTE or adjusting
+              class weights.
+            </li>
+            <li>
+              Channel-specific strategies to personalize offers through more
+              effective channels like web and mobile.
+            </li>
+          </ul>
+        </body>
+      </html>
 
       <h2>References</h2>
       <ul>
