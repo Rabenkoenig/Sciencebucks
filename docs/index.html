@@ -74,13 +74,297 @@
       </p>
 
       <p>
-        This analysis aims to understand the effectiveness of different
-        marketing offers and how users of varying demographics respond to them.
-        By evaluating metrics such as the Received-to-View Rate and
-        View-to-Completion Rate, we provide actionable insights into the
-        behavior of users and suggest possible improvements for marketing
-        strategies.
+        This data set contains simulated data that mimics customer behavior on
+        the Starbucks rewards mobile app. Every few days, Starbucks sends out
+        offers to users of the app, which can range from simple advertisements
+        for drinks to more substantial offers like discounts or Buy One Get One
+        Free (BOGO) promotions. Some users might receive offers regularly, while
+        others may not receive any during certain weeks. Not all users receive
+        the same offer, which presents a unique challenge for Starbucks.
       </p>
+
+      <p>
+        The task is to determine which demographic groups respond best to each
+        type of offer and how Starbucks can optimize the delivery of these
+        offers to maximize user engagement. The data set represents a simplified
+        version of the real Starbucks app, focusing on a single product, while
+        the actual app has a wide variety of offerings.
+      </p>
+
+      <p>
+        Each offer has a validity period, which defines how long the customer
+        can take advantage of it. For example, a BOGO offer may be valid for
+        five days. Even informational offers have a validity period, allowing
+        customers to be influenced by the information for a set number of days
+        after receiving the offer.
+      </p>
+
+      <p>
+        The data includes transactional records, indicating the amount spent by
+        users and the timing of each transaction, along with interactions with
+        offers—such as when an offer was received, viewed, or completed. It’s
+        important to note that users may make purchases without ever receiving
+        or viewing an offer. Similarly, a user may receive an offer but not open
+        it, yet still make a qualifying purchase during the offer period.
+      </p>
+
+      <p>
+        The primary challenge is to combine transactional, demographic, and
+        offer data to determine which groups of people are most responsive to
+        each type of offer and how to best present each offer. By understanding
+        this, Starbucks can more effectively target different demographic groups
+        through specific channels, ultimately optimizing marketing efforts and
+        enhancing customer satisfaction.
+      </p>
+      <h2>Datasets</h2>
+      <p>
+        The analysis is based on three main datasets: <strong>Profile</strong>,
+        <strong>Portfolio</strong>, and <strong>Transcript</strong>. Each
+        dataset plays a crucial role in understanding user behavior, their
+        response to offers, and the effectiveness of different types of
+        marketing strategies. Below is a detailed description of each dataset:
+      </p>
+      <h3>Profile Dataset</h3>
+      <p>
+        The <strong>Profile</strong> dataset contains demographic information
+        about users participating in the rewards program. It includes data for
+        17,000 users across five fields:
+      </p>
+      <ul>
+        <li>
+          <strong>Gender</strong>: This variable is categorical and can take
+          values such as 'M', 'F', 'O', or <code>null</code> if the information
+          is missing. Understanding user gender helps in identifying
+          gender-specific preferences and tailoring targeted offers accordingly.
+        </li>
+        <li>
+          <strong>Age</strong>: A numerical value representing the user's age.
+          Missing values are encoded as <code>118</code>. Age is a significant
+          factor for understanding generational behavior patterns in offer
+          response.
+        </li>
+        <li>
+          <strong>ID</strong>: A unique identifier for each user, represented as
+          a hashed string. This ID helps in linking users across the datasets.
+        </li>
+        <li>
+          <strong>Became Member On</strong>: The date when the user joined the
+          rewards program, given in <code>YYYYMMDD</code> format. This variable
+          is helpful to understand how user engagement changes over time,
+          depending on membership duration.
+        </li>
+        <li>
+          <strong>Income</strong>: The annual income of the user, represented as
+          a numeric value. Income is an important factor in determining which
+          types of offers resonate better with different socioeconomic segments.
+        </li>
+      </ul>
+      <h3>Portfolio Dataset</h3>
+      <p>
+        The <strong>Portfolio</strong> dataset includes details of all the
+        offers sent out during the 30-day test period. It contains data for 10
+        different offers across six fields:
+      </p>
+      <ul>
+        <li>
+          <strong>Reward</strong>: The monetary amount awarded if the user
+          completes the offer's conditions.
+        </li>
+        <li>
+          <strong>Channels</strong>: A list indicating the different
+          communication channels used to deliver the offer. These can include
+          <code>web</code>, <code>email</code>, <code>mobile</code>, and
+          <code>social</code>. Understanding which channels are most effective
+          is essential for optimizing marketing strategies.
+        </li>
+        <li>
+          <strong>Difficulty</strong>: The monetary amount the user is required
+          to spend to receive the reward. This is crucial for assessing user
+          behavior under varying spending thresholds.
+        </li>
+        <li>
+          <strong>Duration</strong>: The number of days the offer remains valid.
+          This helps in analyzing the influence of offer validity period on user
+          engagement.
+        </li>
+        <li>
+          <strong>Offer Type</strong>: The type of offer, which could be
+          <code>bogo</code>, <code>discount</code>, or
+          <code>informational</code>. This is a critical variable for comparing
+          which types of offers work best for different demographics.
+        </li>
+        <li>
+          <strong>ID</strong>: A unique identifier for each offer, represented
+          as a hashed string. This ID allows linking offer data with user
+          interactions recorded in the transcript dataset.
+        </li>
+      </ul>
+      <h3>Transcript Dataset</h3>
+      <p>
+        The <strong>Transcript</strong> dataset provides a detailed log of all
+        events related to user interactions with the offers. It contains 306,648
+        records across four main fields:
+      </p>
+      <ul>
+        <li>
+          <strong>Person</strong>: A unique identifier for each user,
+          represented as a hashed string. This allows linking with demographic
+          data from the profile dataset.
+        </li>
+        <li>
+          <strong>Event</strong>: A string indicating the type of
+          interaction—such as <code>offer received</code>,
+          <code>offer viewed</code>, <code>transaction</code>, or
+          <code>offer completed</code>. This field helps track the complete
+          journey of an offer and understand the conversion funnel.
+        </li>
+        <li>
+          <strong>Value</strong>: A dictionary that holds various values
+          depending on the event type. It may contain <code>amount</code> (for
+          transaction events) or <code>reward</code> (for completed offers).
+          This field is instrumental in tracking user spending and reward
+          earnings.
+        </li>
+        <li>
+          <strong>Offer ID</strong>: The unique identifier for the offer
+          involved in the interaction. It allows connecting specific events with
+          the corresponding offer in the portfolio dataset.
+        </li>
+        <li>
+          <strong>Amount</strong>: The amount spent during a transaction,
+          applicable to <code>transaction</code> events. This helps in
+          quantifying user spending behavior.
+        </li>
+        <li>
+          <strong>Reward</strong>: The reward received upon completing an offer.
+          This field is key to understanding how users respond to incentives.
+        </li>
+        <li>
+          <strong>Time</strong>: A numeric value indicating the number of hours
+          since the start of the test. It provides a timeline for each user’s
+          interactions, helping to understand the sequence of events.
+        </li>
+      </ul>
+      <h3>Significance of Key Variables</h3>
+      <p>
+        The <strong>Profile</strong> dataset gives a deep insight into user
+        demographics, which are crucial for understanding which groups are more
+        responsive to each type of offer. For example, variables like
+        <em>age</em> and <em>income</em> help segment users, enabling the
+        identification of which age groups or income brackets respond best to
+        specific offers.
+      </p>
+      <p>
+        The <strong>Portfolio</strong> dataset provides information about the
+        characteristics of each offer, such as the type, reward, and
+        communication channels used. This information is essential to analyze
+        the performance of each offer and to understand which type of offers are
+        more effective and through which channels.
+      </p>
+      <p>
+        The <strong>Transcript</strong> dataset logs the entire user interaction
+        with each offer, allowing for a complete analysis of the user journey.
+        The <em>event</em> field is particularly important for understanding how
+        many users viewed an offer after receiving it and eventually completed
+        it. This dataset also helps quantify spending behavior (<em>amount</em>
+        field) and reward earnings (<em>reward</em> field).
+      </p>
+      <p>
+        By combining these datasets, we gain a holistic view of user
+        behavior—from their demographic background to how they interact with
+        offers. This integrated analysis enables us to answer critical questions
+        regarding offer effectiveness, channel performance, and demographic
+        preferences, ultimately guiding the development of a more targeted and
+        effective marketing strategy for Starbucks.
+      </p>
+
+      <h2>Strategy for Solving the Problem</h2>
+      <p>
+        To tackle the problem of identifying which groups of people are most
+        responsive to each type of offer and how best to present these offers,
+        we employed a structured approach consisting of various stages, from
+        project setup to modeling and evaluation. The methodology involved
+        setting up a clear project structure, performing extensive exploratory
+        data analysis (EDA), building a preprocessing pipeline, and finally
+        applying machine learning techniques to create predictive models.
+      </p>
+
+      <img src="user.jpg" alt="typical user">
+      <h3>Overall Approach and Methodology</h3>
+      <p>
+        The overall approach began by organizing the project in a modular
+        manner:
+      </p>
+      <ul>
+        <li>
+          <strong>Project Setup and Organization</strong>: The project was
+          divided into different files and folders:
+        </li>
+        <ul>
+          <li><code>data/</code>: Store the provided JSON files.</li>
+          <li>
+            <code>notebooks/</code>: Jupyter notebooks split by major phases,
+            including EDA, preprocessing, and modeling.
+          </li>
+          <li>
+            <code>src/</code>: Scripts for loading, preprocessing, and modeling
+            functions.
+          </li>
+          <li>
+            <code>README.md</code>: Outlines the purpose, approach, and setup
+            instructions.
+          </li>
+          <li><code>requirements.txt</code>: For project dependencies.</li>
+        </ul>
+        <li>
+          <strong>Initial Steps</strong>: Load the JSON files and conduct a
+          preliminary overview to understand the basic structure, relationships,
+          and any missing data in the datasets. This phase also involved setting
+          up a notebook template with sections for project definition, analysis,
+          methodology, and results.
+        </li>
+        <li>
+          <strong>Project Definition</strong>: Formulated a clear problem
+          statement about optimizing offer targeting by demographic groups,
+          defined key metrics such as response rate and engagement rate, and
+          justified these metrics in relation to the project's goals.
+        </li>
+        <li>
+          <strong>Data Analysis and Exploration</strong>: We conducted an
+          exploratory data analysis (EDA) to understand the relationships in the
+          data. We explored demographics, offer details, and user interaction
+          sequences, which allowed us to perform feature engineering, such as
+          calculating <em>days_since_signup</em> and <em>spending_category</em>.
+          This stage involved extensive visualizations to identify correlations
+          between demographics, offer types, and engagement patterns.
+        </li>
+        <li>
+          <strong>Preprocessing Pipeline</strong>: We merged the datasets to
+          create a comprehensive dataset of user interactions, handled missing
+          values, and encoded categorical variables like <em>offer_type</em> and
+          <em>gender</em> using one-hot encoding. We also engineered additional
+          features such as <em>total_spent_during_offer</em> and
+          <em>viewed_offer_before_purchase</em>.
+        </li>
+        <li>
+          <strong>Modeling</strong>: We trained initial models on preprocessed
+          data to predict whether users would respond to an offer. We used a
+          Random Forest Classifier, starting with a basic heuristic or
+          rule-based model as a baseline, and iteratively refined it by adding
+          more complex features and hyperparameter tuning. Alternative models
+          such as logistic regression and gradient boosting were also tested and
+          compared.
+        </li>
+      </ul>
+
+      <h2>Discussion of the Expected Solution</h2>
+      <p>The proposed solution integrates several components that work together to address the problem effectively:</p>
+      <h3>Overall Architecture or Workflow</h3>
+      <p>The project follows a well-defined workflow that integrates data preprocessing, feature engineering, modeling, and evaluation stages:</p>
+      <ul>
+        <li><strong>Data Preprocessing</strong>: This step involved preparing and cleaning the data by handling missing values, encoding categorical variables, and engineering features. These preprocessed data were then merged to create a unified dataset that captured user, offer, and interaction details comprehensively.</li>
+        <li><strong>Modeling</strong>: We aimed to train a <strong>Random Forest Classifier</strong> model capable of predicting which demographic groups would be most responsive to each type of offer and the optimal channels to reach them. The model was chosen for its robustness in handling a mix of feature types and its capability to manage complex interactions between variables. Additionally, we used GridSearchCV for hyperparameter tuning to optimize model performance.</li>
+        <li><strong>Evaluation</strong>: Model evaluation was done using metrics like accuracy, precision, recall, and F1-score. These metrics helped us understand the model's effectiveness in predicting offer completions. The evaluation results were visualized using feature importance plots, confusion matrices, and ROC curves to interpret the model's behavior and identify areas for improvement.</li>
 
       <h2>Exploratory Data Analysis (EDA) Insights</h2>
       <p>
