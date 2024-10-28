@@ -38,43 +38,6 @@ These datasets were merged to provide a comprehensive overview of how users resp
 - **Offer Response Attribution**: A key challenge was correctly attributing which channels and offer types had the most influence on users. This is crucial for optimizing marketing efforts and budgets.
 - **Recommendations**: Future improvements include integrating user location data and analyzing the effect of seasonal variations. Exploring different combinations of marketing channels may also reveal synergies that boost engagement.
 
-## Project Files
-
-- **notebooks/**: Jupyter notebooks used for data exploration, model development, and analysis.
-- **scripts/**: Python scripts for ETL, modeling, and evaluation.
-- **data/**: Folder containing profile, portfolio, and transcript datasets.
-- **README.md**: This file, providing an overview of the project.
-- **offer_analysis.html**: Blog post summarizing the analysis and findings.
-
-## How to Run
-
-1. Clone the repository.
-2. Install the required dependencies listed in `requirements.txt`.
-3. Run the Jupyter notebooks or Python scripts for different stages of the analysis.
-
-```bash
-pip install -r requirements.txt
-```
-
-4. Start the Jupyter notebook to explore data or execute the Python scripts.
-
-```bash
-jupyter notebook
-```
-
-## Libraries Used
-
-- **Pandas**: Data manipulation and analysis.
-- **Scikit-Learn**: Machine learning modeling and evaluation.
-- **Matplotlib & Seaborn**: Data visualization.
-
-## References
-
-- [1] Scikit-Learn Documentation for Random Forest Classifier.
-- [2] Article discussing class imbalance solutions in machine learning.
-- [3] Source discussing the impact of different marketing channels on user behavior.
-
-## Acknowledgments
-
-Special thanks to Starbucks for providing the dataset and to the contributors who made this project possible.
+## Links
+- **[Blog Post](https://rabenkoenig.github.io/Sciencebucks/)**: Published summary of the analysis and findings.
 
